@@ -60,6 +60,16 @@ public class TestPayStation {
     // 25 cent in 5 cent coins each giving 2 minutes parking
   }
 
+  @Test
+  public void aceptaMasDeUnaMoneda() throws IllegalCoinException {
+    ps.addPayment( 25 );
+    assertEquals( "Should display 10 min for 25 cents",
+            25 / 5 * 2, ps.readDisplay() );
+    ps.addPayment( 10 );
+    assertEquals( "Should display 14 min for 35 cents",
+            35 / 5 * 2, ps.readDisplay() );
+  }
+
   /** 
    * Verify that illegal coin values are rejected.
   */
@@ -67,5 +77,23 @@ public class TestPayStation {
   public void shouldRejectIllegalCoin() throws IllegalCoinException {
     ps.addPayment(17);
   }
+
+  @Test
+  public void reciboValido() throws IllegalCoinException {
+
+    Receipt r = ps.buy();
+    assertEquals( "Devuelve una recibo con 16 min",
+            16, r.value() );
+  }
+
+  @Test
+  public void RecipeCanStoreValues() throws IllegalCoinException {
+    
+    ReceiptImpl r = new ReceiptImpl();
+    r.value = 16;
+    assertEquals( "Devuelve una recibo con 16 min",
+            16, r.value() );
+  }
+
 
 }
